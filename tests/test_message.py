@@ -14,3 +14,13 @@ def test_message_flagging():
     assert msg.is_flagged() == False
     msg.flag()
     assert msg.is_flagged() == True
+
+def test_subclass_category_override():
+    from spam_message import SpamMessage
+    from shouting_message import ShoutingMessage
+
+    spam = SpamMessage("Buy now", "user_sam", "2026-08-01 09:00")
+    shout = ShoutingMessage("HELLO", "user_james", "2026-08-01 09:00")
+
+    assert spam.get_category() == "Spam"
+    assert shout.get_category() == "Shouting"

@@ -67,8 +67,8 @@ The expcted output:
 platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0
 rootdir: #file name and saved location
 configfile: pytest.ini
-collected 2 items                               
+collected 3 items                               
 
 tests/test_message.py ..                  [100%]
 
-=============== 2 passed in 0.01s ===============
+=============== 3 passed in 0.01s ===============
