@@ -1,12 +1,13 @@
 import csv
-from src.message import Message
-from src.spam_message import SpamMessage
-from src.shouting_message import ShoutingMessage
+from message import Message
+from spam_message import SpamMessage
+from shouting_message import ShoutingMessage
 class Moderator:
     def __init__(self):
         self.messages = []
 
     def add_message(self, message):
+        self.messages.append(message)
 
     def list_messages(self):
         if not self.messages:
@@ -54,3 +55,39 @@ class Moderator:
             if msg.is_flagged() == flagged:
                 results.append(msg)
         return results
+
+    def save_data(self, filepath):
+        with open(filepath, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['ID', 'Content', 'Author', 'Timestamp', 'Category', 'Flagged'])
+            for i, msg in enumerate(self.messages, start=1):
+                writer.writerow([
+                    i,
+                    msg.get_content(),
+                    msg.get_author(),
+                    msg.get_timestamp(),
+                    msg.get_category(),
+                    msg.is_flagged()
+                ])
+        print(f"Data saved to {filepath}")
+
+    def load_data(self, filepath):
+        self.messages = []
+        with open(filepath, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                category = row['Category']
+                flagged = row['Flagged'] == 'True'
+
+                if category == 'Spam':
+                    msg = SpamMessage(row['Content'], row['Author'], row['Timestamp'])
+                elif category == 'Shouting':
+                    msg = ShoutingMessage(row['Content'], row['Author'], row['Timestamp'])
+                else:
+                    msg = Message(row['Content'], row['Author'], row['Timestamp'], category)
+
+                if flagged:
+                    msg.flag()
+
+                self.messages.append(msg)
+        print(f"Data loaded from {filepath}")
