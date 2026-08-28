@@ -2,7 +2,7 @@ from message import Message
 
 class SpamMessage(Message):
     def __init__(self, content, author, timestamp):
-        # TODO: Initialize the spam message
-        pass
+        super().__init__(content, author, timestamp, category="Spam")
 
-    # TODO: Implement spam-specific methods
+    def get_category(self):
+        return "Spam"

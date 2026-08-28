@@ -2,7 +2,7 @@ from message import Message
 
 class ShoutingMessage(Message):
     def __init__(self, content, author, timestamp):
-        # TODO: Initialize the shouting message
-        pass
+        super().__init__(content, author, timestamp, category="Shouting")
 
-    # TODO: Implement shouting-specific methods
+    def get_category(self):
+        return "Shouting"

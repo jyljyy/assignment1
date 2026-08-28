@@ -1,4 +1,7 @@
 from moderator import Moderator
+from spam_message import SpamMessage
+from shouting_message import ShoutingMessage
+from datetime import datetime
 
 def main():
     moderator = Moderator()
@@ -17,26 +20,65 @@ def main():
         choice = input("Enter your choice (1-8): ")
         
         if choice == '1':
-            # TODO: Implement list all messages
-            pass
+            moderator.list_messages()
+
         elif choice == '2':
-            # TODO: Implement add new message
-            pass
+            content = input("Enter message content: ")
+            author = input("Enter author's username: ")
+            category = input("Enter category (spam/shouting): ")
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+            
+            if category.lower() == "spam":
+                new_message = SpamMessage(content, author, timestamp)
+            elif category.lower() == "shouting":
+                new_message = ShoutingMessage(content, author, timestamp)
+            else:
+                print("Invalid category. Message not added.")
+                continue
+
+            moderator.add_message(new_message)
+            print("Message added successfully.")
+
         elif choice == '3':
-            # TODO: Implement search for a message
-            pass
+            print("1. By category (spam/shouting)")
+            print("2. By author")
+            print("3. By flagged status")
+            search_choice = input("Enter your choice (1-3): ")
+            
+            if search_choice == '1':
+                category = input("Enter category (spam/shouting): ")
+                results = moderator.search_by_category(category)
+            elif search_choice == '2':
+                    author = input("Enter author: ")
+                    results = moderator.search_by_author(author)
+            elif search_choice == '3':
+                    flagged_input = input("Search flagged messages? (yes/no): ")
+                    flagged = flagged_input.lower() == 'yes'
+                    results = moderator.search_by_flagged_status(flagged)
+            else:
+                print("Invalid choice.")
+                continue
+            
+            if not results:
+                print("No matching messages found.")
+            else:
+                print("Search Results:")
+                for msg in results:
+                    print(msg)
+
         elif choice == '4':
-            # TODO: Implement flag a message
-            pass
+            index = int(input("Enter the message number to flag: "))
+            moderator.flag_message(index)
         elif choice == '5':
-            # TODO: Implement display message details
-            pass
+            index = int(input("Enter the message ID: "))
+            moderator.display_message_details(index)
+
         elif choice == '6':
-            # TODO: Implement save moderator data
-            pass
+            moderator.save_data("data/messages.csv")
+
         elif choice == '7':
-            # TODO: Implement load moderator data
-            pass
+            moderator.load_data("data/messages.csv")
+
         elif choice == '8':
             print("Thank you for using the Content Moderation System!")
             break

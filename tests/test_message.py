@@ -1,8 +1,16 @@
 import pytest
-from src.message import Message
+from message import Message
 
 def test_message_initialization():
-    # TODO: Write a test to check if a Message object is initialized correctly
-    pass
+    msg = Message("Hello world", "user_alex", "2026-08-01 09:15", "General")
+    assert msg.get_content() == "Hello world"
+    assert msg.get_author() == "user_alex"
+    assert msg.get_timestamp() == "2026-08-01 09:15"
+    assert msg.get_category() == "General"
+    assert msg.is_flagged() == False
 
-# TODO: Write at least one more test for the Message class
+def test_message_flagging():
+    msg = Message("Hello world", "user_alex", "2026-08-01 09:15", "General")
+    assert msg.is_flagged() == False
+    msg.flag()
+    assert msg.is_flagged() == True
